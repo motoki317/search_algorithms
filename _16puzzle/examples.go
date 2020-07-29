@@ -2,6 +2,9 @@ package _16puzzle
 
 import "../base"
 
+// Some of the examples here are from
+// http://www.ic-net.or.jp/home/takaken/nt/slide/solve15.html
+
 func GetExample() base.Board {
 	// true: 14
 	//b := [base.size][base.size]int{
