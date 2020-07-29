@@ -7,6 +7,7 @@ This repository shows an example implementation of the following graph search al
 - IDDFS (Iterative Deepening Depth-First Search)
 - A\* (A-star Search)
 - IDA\* (Iterative Deepening A-star Search)
+- BFS (Best First Search)
 
 ## Usage
 
