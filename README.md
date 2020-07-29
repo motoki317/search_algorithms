@@ -3,7 +3,6 @@
 This repository shows an example implementation of the following graph search algorithms.
 
 - BFS (Breadth-First Search)
-- DFS (Depth-First Search)
 - IDDFS (Iterative Deepening Depth-First Search)
 - A\* (A-star Search)
 - IDA\* (Iterative Deepening A-star Search)
