@@ -86,7 +86,7 @@ func NewSearcher() *Searcher {
 	}
 }
 
-func Solve(b base.Board) (duration time.Duration) {
+func Solve(b base.Board) (operations []base.Operation, duration time.Duration) {
 	if !b.IsSolvable() {
 		fmt.Println("Not solvable")
 		return
@@ -95,17 +95,13 @@ func Solve(b base.Board) (duration time.Duration) {
 	s := NewSearcher()
 
 	start := time.Now()
-	res := s.search(b)
-	if res == nil {
+	operations = s.search(b)
+	if operations == nil {
 		fmt.Println("No goal found")
 		return
 	}
 	duration = time.Since(start)
 	fmt.Printf("Searched nodes: %v\n", s.nodes)
 	fmt.Printf("Remaining nodes: %v\n", len(s.next))
-
-	for i, layer := range res {
-		fmt.Printf("%v-th move: %v\n", i+1, layer)
-	}
 	return
 }

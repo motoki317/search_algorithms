@@ -90,7 +90,7 @@ func NewSearcher(h heuristics.F) *BestFirstSearcher {
 	}
 }
 
-func Solve(b base.Board, h heuristics.F) (duration time.Duration) {
+func Solve(b base.Board, h heuristics.F) (operations []base.Operation, duration time.Duration) {
 	if !b.IsSolvable() {
 		fmt.Println("Not solvable")
 		return
@@ -100,18 +100,13 @@ func Solve(b base.Board, h heuristics.F) (duration time.Duration) {
 	s := NewSearcher(h)
 
 	start := time.Now()
-	res := s.search(b)
-	if res == nil {
+	operations = s.search(b)
+	if operations == nil {
 		fmt.Println("No goal found")
 		return
 	}
 	duration = time.Since(start)
 	fmt.Printf("Searched nodes: %v\n", s.nodes)
 	fmt.Printf("Remaining nodes: %v\n", s.next.Size())
-
-	fmt.Printf("Solution length: %v\n", len(res))
-	//for i, layer := range res {
-	//	fmt.Printf("%v-th move: %v\n", i + 1, layer)
-	//}
 	return
 }

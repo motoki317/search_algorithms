@@ -11,34 +11,41 @@ var (
 	visited = make(map[base.Board]int)
 )
 
-func iddfs(b base.Board, depth, maxDepth int) bool {
+func iddfs(b base.Board, depth, maxDepth int) ([]base.Operation, bool) {
 	nodes++
 
 	if b.IsGoal() {
-		return true
+		return nil, true
 	}
 
 	if depth >= maxDepth {
-		return false
+		return nil, false
 	}
 
 	if beforeDepth, ok := visited[b]; ok && beforeDepth <= depth {
-		return false
+		return nil, false
 	}
 	visited[b] = depth
 
 	for _, op := range b.PossibleOps() {
 		next := b.Operate(op)
-		res := iddfs(next, depth+1, maxDepth)
+		ops, res := iddfs(next, depth+1, maxDepth)
 		if res {
-			fmt.Printf("depth %v operation: %v\n", depth, op)
-			return true
+			ops = append(ops, op)
+			return ops, true
 		}
 	}
-	return false
+	return nil, false
 }
 
-func Solve(b base.Board) (duration time.Duration) {
+func reverse(s []base.Operation) []base.Operation {
+	for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
+		s[i], s[j] = s[j], s[i]
+	}
+	return s
+}
+
+func Solve(b base.Board) (operations []base.Operation, duration time.Duration) {
 	if !b.IsSolvable() {
 		fmt.Println("Not solvable")
 		return
@@ -49,7 +56,9 @@ func Solve(b base.Board) (duration time.Duration) {
 	for i := 1; i <= 100; i++ {
 		fmt.Printf("max depth: %v\n", i)
 		visited = make(map[base.Board]int)
-		if iddfs(b, 0, i) {
+		var ok bool
+		if operations, ok = iddfs(b, 0, i); ok {
+			operations = reverse(operations)
 			duration = time.Since(start)
 			fmt.Printf("Goal found at depth %v\n", i)
 			fmt.Printf("Searched nodes: %v\n", nodes)

@@ -115,7 +115,7 @@ func restoreOperation(before, after base.Board) base.Operation {
 	panic("cannot find operation")
 }
 
-func Solve(b base.Board, h heuristics.F) (duration time.Duration) {
+func Solve(b base.Board, h heuristics.F) (operations []base.Operation, duration time.Duration) {
 	if !b.IsSolvable() {
 		fmt.Println("Not solvable")
 		return
@@ -137,6 +137,7 @@ func Solve(b base.Board, h heuristics.F) (duration time.Duration) {
 
 	//fmt.Printf("first state:\n%v\n", b)
 	values := reverse(path.Values())
+	operations = make([]base.Operation, 0, len(values)-1)
 	for i := range values {
 		if i == 0 {
 			continue
@@ -144,8 +145,7 @@ func Solve(b base.Board, h heuristics.F) (duration time.Duration) {
 		before := values[i-1].(base.Board)
 		after := values[i].(base.Board)
 		op := restoreOperation(before, after)
-		fmt.Printf("%v-th operation: %v\n", i, op)
-		//fmt.Printf("%v\n", after)
+		operations = append(operations, op)
 	}
 	return
 }
